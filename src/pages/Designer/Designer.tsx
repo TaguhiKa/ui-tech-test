@@ -1,5 +1,6 @@
 import InputField from '../../components/fields/InputField';
 import ButtonField from '../../components/fields/SubmitField';
+import CountryField from '../../components/fields/CountryField';
 import Label from '../../components/fields/Label';
 import useFields, { Submit, Input } from '../../components/fields/useFields';
 import FieldWrapper from '../../components/fields/FieldWrapper';
@@ -41,6 +42,12 @@ export default function Designer() {
                                     <FieldWrapper id={f.id} key={f.id} className="mt-4" >
                                         <ButtonField {...f as Submit} />
                                     </FieldWrapper>);
+                            case "country":
+                                return (
+                                    <FieldWrapper id={f.id} key={f.id} className="mt-4" >
+                                        <CountryField />
+                                    </FieldWrapper>);
+                            
                         }
                     })}
                     {/** Add a new field */}

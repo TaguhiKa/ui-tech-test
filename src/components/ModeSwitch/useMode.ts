@@ -1,7 +1,25 @@
-import { useReducer } from "react"
-type Mode = "preview" | "edit"
+import { useReducer, useEffect } from "react";
+
+type Mode = "preview" | "edit";
+
+function modeReducer(_: Mode, action: Mode): Mode {
+  return action;
+}
 
 export default function useMode() {
-    // TODO: re-implement this hook so that it reads and writes the mode query parameter from the URL
-    return useReducer((mode: Mode) => (mode === "preview" ? "edit" : "preview"), "preview")
+  const searchParams = new URLSearchParams(window.location.search);
+
+  const urlMode = searchParams.get("mode") as Mode | null;
+  const initialMode: Mode = urlMode || "preview";
+
+  const [mode, dispatch] = useReducer(modeReducer, initialMode);
+
+  useEffect(() => {
+    searchParams.set("mode", mode);
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.history.replaceState(null, "", newUrl);
+  }, [mode, searchParams]);
+
+  return [mode, dispatch] as const;
 }
+
